@@ -12,6 +12,12 @@ Hỗ trợ user đặt tuyến đi xe du lịch local, cùng với recommendatio
 </div>
 
 
+## Scale Plan
+- Dùng Google Maps API để lấy data ban đầu làm recommendation, xong thu thập thêm lựa chọn người dùng/feedback sau lộ trình để improve quality (tại sao user bỏ tour etc)
+- 1-click book following ride UI
+- Thêm khả năng edit chỗ đón (v.d thay cổng)
+- Giảm giá 10% mỗi chuyến đi theo lộ trình (để khuyến khích user chỉnh sửa theo đúng ý, collect data)
+  
 ## Phân Công
 
 |Tên | Phần |
