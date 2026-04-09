@@ -10,6 +10,8 @@ from langgraph.prebuilt import ToolNode
 from langgraph.graph.message import add_messages
 
 # Nạp các biến môi trường từ file .env
+import requests
+from datetime import datetime
 load_dotenv(override=True)
 
 # --- CẤU HÌNH TRẠNG THÁI VÀ ĐỒ THỊ (GRAPH) ---
@@ -58,8 +60,47 @@ def get_attraction_details(attraction_id: str) -> str:
             return json.dumps(attr, ensure_ascii=False)
     return "Attraction not found."
 
+@tool
+def get_weather_forecast(lat: float, lng: float) -> str:
+    """Lấy thông tin thời tiết hiện tại cho một tọa độ cụ thể (latitude, longitude)."""
+    try:
+        url = "https://api.open-meteo.com/v1/forecast"
+        params = {
+            "latitude": lat,
+            "longitude": lng,
+            "current_weather": True,
+            "timezone": "Asia/Bangkok"
+        }
+        response = requests.get(url, params=params, timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            current = data.get("current_weather", {})
+            weather_code = current.get("weathercode")
+            
+            # Simple mapping for weather codes
+            weather_desc = "Không rõ"
+            if weather_code == 0: weather_desc = "Trời quang"
+            elif weather_code in [1, 2, 3]: weather_desc = "Ít mây / U ám"
+            elif weather_code in [45, 48]: weather_desc = "Sương mù"
+            elif weather_code in [51, 53, 55]: weather_desc = "Mưa phùn"
+            elif weather_code in [61, 63, 65]: weather_desc = "Mưa"
+            elif weather_code in [71, 73, 75]: weather_desc = "Tuyết"
+            elif weather_code in [80, 81, 82]: weather_desc = "Mưa rào"
+            elif weather_code >= 95: weather_desc = "Dông"
+            
+            result = {
+                "temperature": current.get("temperature"),
+                "windspeed": current.get("windspeed"),
+                "description": weather_desc,
+                "time": current.get("time")
+            }
+            return json.dumps(result, ensure_ascii=False)
+        return f"Không thể lấy dữ liệu thời tiết (Status code: {response.status_code})"
+    except Exception as e:
+        return f"Lỗi khi gọi API thời tiết: {str(e)}"
+
 # Danh sách các công cụ mà Agent có quyền sử dụng
-tools = [search_nearby_attractions, get_attraction_details]
+tools = [search_nearby_attractions, get_attraction_details, get_weather_forecast]
 # Khởi tạo đối tượng ToolNode để quản lý việc thực thi các tool trong đồ thị
 tool_node = ToolNode(tools)
 
@@ -82,7 +123,8 @@ Your goal is to help users discover attractions, find interesting places nearby,
 # CRITICAL RULES:
 1. Always respond in Vietnamese and maintain a warm, welcoming tone.
 2. Only use `search_nearby_attractions` when the user explicitly asks for recommendations, "what's nearby", or looking for something to do.
-3. If the user only says "hello", use the provided location info to make the greeting personalized and relevant to where they are.
+3. Nếu người dùng hỏi về thời tiết tại một địa điểm cụ thể hoặc dự định đi đâu đó, hãy sử dụng `get_weather_forecast`.
+4. Nếu người dùng chỉ chào hỏi, hãy sử dụng thông tin vị trí được cung cấp để chào hỏi cá nhân hóa và phù hợp với nơi họ đang ở.
 
 When you identify a set of places for an itinerary, always include a JSON block at the end of your response with the exact format below (use the real IDs from the tools, NOT names):
 ```json
