@@ -3,6 +3,7 @@ import json
 from typing import Annotated, List, TypedDict, Union, Sequence, Dict, Any
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage
 from langchain_core.tools import tool
 from langgraph.graph import StateGraph, END
@@ -66,7 +67,12 @@ tool_node = ToolNode(tools)
 # --- Agent Logic ---
 
 # Khởi tạo mô hình ngôn ngữ (LLM) gpt-4o
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+#llm = ChatOpenAI(model="gpt-4o", temperature=0)
+llm = ChatAnthropic(
+    model="claude-3-haiku-20240307",
+    temperature=0
+)
+
 # 'Gắn' các công cụ vào mô hình để nó biết mình có quyền gọi tool
 llm_with_tools = llm.bind_tools(tools)
 
