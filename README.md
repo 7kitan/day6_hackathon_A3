@@ -1,20 +1,21 @@
-# 🌏 TravelBuddy AI Agent - Modernization (Day 6 Hackathon)
+# (XanhSM) Holiday Mode AI Agent (Day 6 Hackathon)
 
-Chào mừng bạn đến với phiên bản cải tiến của **TravelBuddy**, một trợ lý du lịch AI được xây dựng trên nền tảng **LangGraph 0.2** và **Next.js**. Dự án này đã được tối ưu hóa về hiệu năng, quản lý trạng thái và tích hợp hệ thống Telemetry chi tiết.
+Hỗ trợ user đặt tuyến đi xe du lịch local, cùng với recommendation các địa điểm tham quan và auto đặt xe
 
-## 🚀 Tính năng nổi bật
-- **LangGraph 0.2 Infrastructure**: Sử dụng StateGraph hiện đại để quản lý luồng suy nghĩ của AI.
-- **Dynamic Location Injection**: Tự động nhận diện và đưa vị trí người dùng vào Prompt để phản hồi chính xác.
-- **Smart Itinerary Actions**: Tự động trích xuất JSON để vẽ lộ trình du lịch trên bản đồ Frontend.
-- **Telemetry System**: Theo dõi độ trễ (Latency) và số lượng Token tiêu thụ trong thời gian thực.
-- **Clean UI/UX**: Giao diện hiện đại, hỗ trợ streaming và xử lý lỗi vòng lặp React.
+### Level: Demo Application (screenshot dưới đây)
 
----
+## Phân Công
 
-## 🛠️ Hướng dẫn cài đặt và Khởi chạy
+|Tên | Phần |
+|-----|----|
+| Kiệt | Implementation Plan + v2 Frontend fix UI + System Prompt + Test User Path |
+| Bách | Backend (Routing) |
+| Hoàng | v1 Frontend (Web version - đã bỏ) |
+| Duy | Spec + Agent Tools |
+| Giang | System Prompt + Agent Tools |
+| Hưng | MapView API |
 
-Dự án gồm 2 module chính: `backend` (FastAPI) và `frontend` (Next.js).
-
+## Run Project
 ### 1. Backend (FastAPI)
 Yêu cầu: Python 3.10+
 
@@ -59,17 +60,12 @@ Yêu cầu: Node.js 18+
     npm run dev
     ```
 
----
+## Tools
+- UI: v0 (Vercel)
+- AI: Google Gemini 3.0 Flash 
 
-## 📊 Theo dõi AI (Telemetry)
-Khi sử dụng ứng dụng, hãy quan sát Terminal của Backend để thấy các thông số hiệu năng:
-- **🛠️ GỌI CÔNG CỤ**: Chi tiết các hàm AI đang thực thi.
-- **⏱️ Độ trễ**: Thời gian AI phản hồi.
-- **🎟️ Token**: Số lượng token tiêu thụ cho mỗi lượt chat.
-
----
-
-## 🔗 Liên kết Repository
+## Liên kết Repository
 Dự án được lưu trữ tại: [https://github.com/7kitan/day6_hackathon_A3](https://github.com/7kitan/day6_hackathon_A3)
+
 
 
